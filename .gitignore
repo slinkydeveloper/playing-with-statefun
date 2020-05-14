@@ -1,0 +1,10 @@
+# Project exclude paths
+/common/target/
+/greeter/target/
+/inbound/target/
+/mapper/target/
+/outbound/target/
+
+**/*.iml
+
+.idea/
