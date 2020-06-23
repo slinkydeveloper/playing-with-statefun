@@ -1,0 +1,15 @@
+FROM python:3.7-alpine
+
+RUN mkdir -p /app
+WORKDIR /app
+
+RUN pip install kafka-python
+RUN pip install protobuf
+
+COPY event-generator.py /app
+COPY messages_pb2.py /app
+
+EXPOSE 8080
+
+CMD ["python3", "event-generator.py"]
+

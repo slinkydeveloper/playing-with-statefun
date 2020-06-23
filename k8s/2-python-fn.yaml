@@ -1,0 +1,10 @@
+apiVersion: serving.knative.dev/v1 # Current version of Knative
+kind: Service
+metadata:
+  name: python-fn # The name of the app
+spec:
+  template:
+    spec:
+      containers:
+        - image: docker.io/slinkydeveloper/flink-statefun-python-fn
+          imagePullPolicy: Never

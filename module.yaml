@@ -1,0 +1,40 @@
+version: "1.0"
+module:
+  meta:
+    type: remote
+  spec:
+    functions:
+      - function:
+          meta:
+            kind: http
+            type: k8s-demo/greeter
+          spec:
+            endpoint: http://python-fn.default.svc/statefun
+            states:
+              - seen_count
+            maxNumBatchRequests: 500
+            timeout: 2min
+    ingresses:
+      - ingress:
+          meta:
+            type: statefun.kafka.io/routable-protobuf-ingress
+            id: k8s-demo/names-ingress
+          spec:
+            address: my-cluster-kafka-bootstrap.kafka.svc:9092
+            consumerGroupId: my-group-id
+            topics:
+              - topic: logins
+                typeUrl: com.googleapis/k8s.demo.LoginEvent
+                targets:
+                  - k8s-demo/greeter
+    egresses:
+      - egress:
+          meta:
+            type: statefun.kafka.io/generic-egress
+            id: k8s-demo/greets-egress
+          spec:
+            address: my-cluster-kafka-bootstrap.kafka.svc:9092
+            deliverySemantic:
+              type: exactly-once
+              transactionTimeoutMillis: 100000
+
